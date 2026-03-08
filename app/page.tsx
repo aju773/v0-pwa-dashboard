@@ -1,19 +1,12 @@
 "use client"
 
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
-import { MorningGate } from "@/components/dashboard/morning-gate"
-import { TeamGrid } from "@/components/dashboard/team-grid"
+import { LeaveManagement } from "@/components/dashboard/leave-management"
 
-export default function DashboardPage() {
+export default function LeavesPage() {
   return (
-    <DashboardLayout>
-      <div className="mx-auto max-w-6xl space-y-8">
-        {/* Morning Gate Widget */}
-        <MorningGate />
-
-        {/* Team Overview Grid */}
-        <TeamGrid />
-      </div>
+    <DashboardLayout activeItem="Attendance & Leaves">
+      <LeaveManagement />
     </DashboardLayout>
   )
 }

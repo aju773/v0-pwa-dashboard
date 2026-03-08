@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
+  activeItem?: string
 }
 
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+export function DashboardLayout({ children, activeItem = "Dashboard" }: DashboardLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   return (
@@ -17,6 +18,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        activeItem={activeItem}
       />
       <Topbar sidebarCollapsed={sidebarCollapsed} />
       <main

@@ -17,16 +17,17 @@ import {
 interface SidebarProps {
   collapsed: boolean
   onToggle: () => void
+  activeItem?: string
 }
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "#", active: true },
-  { icon: CalendarCheck, label: "Attendance & Leaves", href: "#" },
-  { icon: Briefcase, label: "CRM & Projects", href: "#" },
-  { icon: Ticket, label: "Internal Tickets", href: "#" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/" },
+  { icon: CalendarCheck, label: "Attendance & Leaves", href: "/leaves" },
+  { icon: Briefcase, label: "CRM & Projects", href: "/crm" },
+  { icon: Ticket, label: "Internal Tickets", href: "/tickets" },
 ]
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: SidebarProps) {
   return (
     <aside
       className={cn(
@@ -67,21 +68,24 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 p-3">
-        {navItems.map((item) => (
-          <a
-            key={item.label}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
-              item.active
-                ? "bg-sidebar-accent text-sidebar-primary"
-                : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-            )}
-          >
-            <item.icon className={cn("size-5 shrink-0", item.active && "text-sidebar-primary")} />
-            {!collapsed && <span>{item.label}</span>}
-          </a>
-        ))}
+        {navItems.map((item) => {
+          const isActive = item.label === activeItem
+          return (
+            <a
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                isActive
+                  ? "bg-sidebar-accent text-sidebar-primary"
+                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+              )}
+            >
+              <item.icon className={cn("size-5 shrink-0", isActive && "text-sidebar-primary")} />
+              {!collapsed && <span>{item.label}</span>}
+            </a>
+          )
+        })}
       </nav>
 
       {/* Bottom Section */}
