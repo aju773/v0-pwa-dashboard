@@ -1,12 +1,10 @@
-"use client"
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
-import { LeaveManagement } from "@/components/dashboard/leave-management"
+import { CRMProjects } from "@/components/dashboard/crm-projects"
 
-export default function LeavesPage() {
+export default function Home() {
   return (
-    <DashboardLayout activeItem="Attendance & Leaves">
-      <LeaveManagement />
+    <DashboardLayout activeItem="CRM & Projects">
+      <CRMProjects />
     </DashboardLayout>
   )
 }
