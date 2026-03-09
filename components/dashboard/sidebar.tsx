@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -66,16 +67,24 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
       <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">W</span>
-            </div>
-            <span className="text-lg font-semibold text-sidebar-foreground">Workspace</span>
+            <Image 
+              src="/photo_2026-03-09_10-01-31.jpg" 
+              alt="Avanzo Logo" 
+              width={36} 
+              height={36} 
+              className="rounded-xl object-contain bg-white shrink-0" 
+            />
+            <span className="text-lg font-semibold text-sidebar-foreground">Avanzo</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">W</span>
-          </div>
+          <Image 
+            src="/photo_2026-03-09_10-01-31.jpg" 
+            alt="Avanzo Logo" 
+            width={36} 
+            height={36} 
+            className="mx-auto rounded-xl object-contain bg-white shrink-0" 
+          />
         )}
       </div>
 

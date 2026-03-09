@@ -1,11 +1,11 @@
 {
-  "name": "Workspace - Team Dashboard",
-  "short_name": "Workspace",
+  "name": "Avanzo - Team Dashboard",
+  "short_name": "Avanzo",
   "description": "Modern team management dashboard for daily standups and project management",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
-  "theme_color": "#6366f1",
+  "theme_color": "#b466b6",
   "orientation": "portrait-primary",
   "icons": [
     {

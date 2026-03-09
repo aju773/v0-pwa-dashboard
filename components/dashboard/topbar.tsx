@@ -11,8 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, Bell, Calendar, AlertTriangle, UserCheck, ChevronDown, MonitorStop } from "lucide-react"
+import { Search, Bell, Calendar, AlertTriangle, UserCheck, ChevronDown, MonitorStop, Sun, Moon } from "lucide-react"
 import { useRole, Role } from "./role-context"
+import { useTheme } from "next-themes"
 
 interface TopbarProps {
   sidebarCollapsed: boolean
@@ -137,6 +138,7 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
 
   const { currentRole, setCurrentRole } = useRole()
   const roles: Role[] = ["Employee", "Team Lead", "HR", "Admin"]
+  const { theme, setTheme } = useTheme()
   
   const activeNotifications = mockNotifications[currentRole] || []
   const unreadCount = activeNotifications.filter((n) => !n.read).length
@@ -193,6 +195,18 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
           <p className="text-sm font-medium text-foreground">{formatTime(currentTime)}</p>
           <p className="text-xs text-muted-foreground">{formatDate(currentTime)}</p>
         </div>
+
+        {/* Theme Toggle */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative rounded-full hover:bg-accent"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-muted-foreground" />
+          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-muted-foreground" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
 
         {/* Notification Dropdown */}
         <DropdownMenu>

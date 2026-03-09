@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { RoleProvider } from '@/components/dashboard/role-context'
+import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
 const inter = Inter({ 
@@ -10,14 +11,14 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Workspace | Team Dashboard',
+  title: 'Avanzo | Team Dashboard',
   description: 'Modern team management dashboard for daily standups, attendance tracking, and project management.',
   generator: 'v0.app',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Workspace',
+    title: 'Avanzo',
   },
   icons: {
     icon: [
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#6366f1',
+  themeColor: '#b466b6',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -54,9 +55,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
-        <RoleProvider>
-          {children}
-        </RoleProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <RoleProvider>
+            {children}
+          </RoleProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
