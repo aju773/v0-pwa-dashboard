@@ -4,7 +4,8 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RaiseBlockerModal } from "./raise-blocker-modal"
-import { CheckCircle2, Clock, Flag, LayoutGrid, Target, Building2 } from "lucide-react"
+import { DailyCheckInModal, CheckInType } from "./daily-checkin-modal"
+import { CheckCircle2, Clock, Flag, LayoutGrid, Target, Building2, Sunrise, Sunset } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export type TaskStatus = "todo" | "in-progress" | "blocked" | "completed"
@@ -76,6 +77,10 @@ export function EmployeeTasks() {
   const [tasks, setTasks] = useState<EmployeeTask[]>(initialTasks)
   const [blockerModalOpen, setBlockerModalOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState<EmployeeTask | null>(null)
+  
+  // New state for Check-in Modal
+  const [checkInModalOpen, setCheckInModalOpen] = useState(false)
+  const [checkInType, setCheckInType] = useState<CheckInType>("morning")
 
   const handleOpenBlocker = (task: EmployeeTask) => {
     setSelectedTask(task)
@@ -95,17 +100,49 @@ export function EmployeeTasks() {
     )
   }
 
+  const handleOpenCheckIn = (type: CheckInType) => {
+    setCheckInType(type)
+    setCheckInModalOpen(true)
+  }
+
+  const handleCheckInSubmit = (data: any) => {
+    console.log("Submitted Check-in:", data)
+    setCheckInModalOpen(false)
+  }
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10">
+          <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10">
             <LayoutGrid className="size-5 text-primary" />
           </div>
           <div>
             <h2 className="text-xl font-semibold text-foreground">My Active Tasks</h2>
             <p className="text-sm text-muted-foreground">Manage your assignments and report blockers</p>
           </div>
+        </div>
+
+        {/* Action Buttons for Check Ins */}
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full bg-blue-50/50 hover:bg-blue-100 text-blue-700 border-blue-200 shadow-none px-4"
+            onClick={() => handleOpenCheckIn("morning")}
+          >
+            <Sunrise className="mr-2 size-4" />
+            Check In
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full bg-indigo-50/50 hover:bg-indigo-100 text-indigo-700 border-indigo-200 shadow-none px-4"
+            onClick={() => handleOpenCheckIn("evening")}
+          >
+            <Sunset className="mr-2 size-4" />
+            Handover
+          </Button>
         </div>
       </div>
 
@@ -115,7 +152,7 @@ export function EmployeeTasks() {
 
           return (
             <Card key={task.id} className={cn(
-              "border-l-4 shadow-sm transition-all hover:shadow-md",
+              "border-0 shadow-md ring-1 ring-border/40 transition-all hover:shadow-lg border-l-4",
               task.status === "blocked" ? "border-l-destructive" :
               task.status === "completed" ? "border-l-emerald-500" :
               task.status === "in-progress" ? "border-l-blue-500" :
@@ -152,7 +189,7 @@ export function EmployeeTasks() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1 rounded-full border-muted bg-card px-3 text-xs shadow-none hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200"
+                      className="flex-1 rounded-full border-transparent bg-muted/50 px-3 text-xs shadow-none hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-colors"
                       onClick={() => handleMarkComplete(task.id)}
                     >
                       <CheckCircle2 className="mr-1.5 size-3.5" />
@@ -163,7 +200,7 @@ export function EmployeeTasks() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1 rounded-full border-muted bg-card px-3 text-xs shadow-none text-destructive/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30"
+                      className="flex-1 rounded-full border-transparent bg-muted/50 px-3 text-xs shadow-none text-destructive/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors"
                       onClick={() => handleOpenBlocker(task)}
                     >
                       <Flag className="mr-1.5 size-3.5" />
@@ -193,6 +230,13 @@ export function EmployeeTasks() {
         onOpenChange={setBlockerModalOpen}
         task={selectedTask}
         onConfirm={handleConfirmBlocker}
+      />
+
+      <DailyCheckInModal
+        open={checkInModalOpen}
+        onOpenChange={setCheckInModalOpen}
+        type={checkInType}
+        onSubmit={handleCheckInSubmit}
       />
     </div>
   )

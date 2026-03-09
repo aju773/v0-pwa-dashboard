@@ -54,7 +54,7 @@ export function OnboardingModal({ open, onOpenChange, onConfirm }: OnboardingMod
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-xl bg-primary/10">
+          <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-primary/10">
             <UserPlus className="size-6 text-primary" />
           </div>
           <DialogTitle className="text-center text-xl">Onboard New Hire</DialogTitle>

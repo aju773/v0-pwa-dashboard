@@ -407,7 +407,7 @@ function ProjectCard({
   const canModify = currentRole === "Team Lead" || currentRole === "Admin"
 
   return (
-    <Card className="border-0 shadow-sm transition-shadow hover:shadow-md">
+    <Card className="border-0 shadow-md ring-1 ring-border/40 transition-shadow hover:shadow-lg">
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -559,7 +559,7 @@ export function CRMProjects() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="h-10 rounded-full border-muted bg-card px-4 text-sm shadow-sm"
+                className="h-10 rounded-full border-transparent bg-muted/50 px-4 text-sm shadow-none hover:bg-muted transition-colors"
               >
                 <span className="text-muted-foreground">Filter by:</span>
                 <span className="ml-1.5 font-medium">
@@ -595,14 +595,14 @@ export function CRMProjects() {
             <>
               <Button
                 variant="outline"
-                className="h-10 rounded-full border-muted bg-card px-5 shadow-sm"
+                className="h-10 rounded-full border-transparent bg-muted/50 px-5 shadow-none hover:bg-muted transition-colors"
                 onClick={() => setClientModalOpen(true)}
               >
                 <Building2 className="mr-2 size-4" />
                 New Client
               </Button>
               <Button 
-                className="h-10 rounded-full px-5 shadow-sm"
+                className="h-10 rounded-full px-5 shadow-md shadow-primary/20"
                 onClick={() => setProjectModalOpen(true)}
               >
                 <Plus className="mr-2 size-4" />
@@ -626,7 +626,7 @@ export function CRMProjects() {
 
       {/* Empty State */}
       {filteredProjects.length === 0 && (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 shadow-md ring-1 ring-border/40">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-muted">
               <Building2 className="size-8 text-muted-foreground" />

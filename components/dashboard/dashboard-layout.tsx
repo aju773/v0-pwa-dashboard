@@ -30,7 +30,11 @@ export function DashboardLayout({ children, activeItem = "Dashboard" }: Dashboar
   }, [])
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/40 relative">
+      {/* Subtle background grid pattern (matches Login page) */}
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,transparent_0%,transparent_49%,var(--border)_50%,transparent_51%,transparent_100%)] bg-[length:80px_80px] opacity-[0.15] pointer-events-none" />
+      <div className="fixed inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_49%,var(--border)_50%,transparent_51%,transparent_100%)] bg-[length:80px_80px] opacity-[0.15] pointer-events-none" />
+
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
@@ -52,14 +56,12 @@ export function DashboardLayout({ children, activeItem = "Dashboard" }: Dashboar
       />
       <main
         className={cn(
-          "min-h-screen pt-16 transition-all duration-300",
-          // On mobile: no left padding (sidebar is an overlay)
-          // On md+: sidebar pushes content
+          "relative z-10 min-h-screen pt-16 transition-all duration-300",
           "pl-0 md:pl-20",
           !sidebarCollapsed && "lg:pl-64"
         )}
       >
-        <div className="p-4 sm:p-6 lg:p-8">{children}</div>
+        <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">{children}</div>
       </main>
     </div>
   )

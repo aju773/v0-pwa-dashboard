@@ -69,7 +69,7 @@ export function AdminSettings() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10">
+          <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10">
             <Settings className="size-5 text-primary" />
           </div>
           <div>
@@ -81,7 +81,7 @@ export function AdminSettings() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Departments Manager */}
-        <Card className="border-0 shadow-sm flex flex-col h-[500px]">
+        <Card className="border-0 shadow-md ring-1 ring-border/40 flex flex-col h-[500px]">
           <CardHeader className="pb-4 border-b border-border/50">
             <div className="flex items-center gap-2">
               <LayoutGrid className="size-4 text-muted-foreground" />
@@ -132,7 +132,7 @@ export function AdminSettings() {
         </Card>
 
         {/* Roles & Designations Manager */}
-        <Card className="border-0 shadow-sm flex flex-col h-[500px]">
+        <Card className="border-0 shadow-md ring-1 ring-border/40 flex flex-col h-[500px]">
           <CardHeader className="pb-4 border-b border-border/50">
             <div className="flex items-center gap-2">
               <Briefcase className="size-4 text-muted-foreground" />
@@ -184,7 +184,7 @@ export function AdminSettings() {
       </div>
 
       {/* Access Control Overview (Static UI for context) */}
-      <Card className="border-0 shadow-sm bg-primary/5 mt-6 border-l-4 border-l-primary">
+      <Card className="border-0 shadow-md ring-1 ring-primary/20 bg-primary/5 mt-6 border-l-4 border-l-primary">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <Shield className="size-6 text-primary shrink-0" />

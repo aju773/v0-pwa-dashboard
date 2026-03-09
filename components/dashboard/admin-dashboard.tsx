@@ -50,7 +50,7 @@ export function AdminDashboard() {
             </div>
           ) : (
             escalatedTickets.map(ticket => (
-              <div key={ticket.id} className="rounded-xl border border-destructive/20 bg-card p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors hover:bg-destructive/5">
+              <div key={ticket.id} className="rounded-xl border-0 ring-1 ring-destructive/20 bg-card p-4 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors hover:bg-destructive/5">
                 
                 <div className="flex items-start md:items-center gap-4">
                   <Avatar className="size-10 ring-2 ring-destructive/30 shrink-0 mt-1 md:mt-0">

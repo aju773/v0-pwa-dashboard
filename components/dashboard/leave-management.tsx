@@ -149,7 +149,7 @@ function StatCard({
   trend?: string
 }) {
   return (
-    <Card className="border-0 shadow-sm">
+    <Card className="border-0 shadow-md ring-1 ring-border/40">
       <CardContent className="flex items-center gap-4 p-5">
         <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10">
           <Icon className="size-6 text-primary" />
@@ -200,7 +200,7 @@ export function LeaveManagement() {
               : "Manage team leave requests and view attendance overview"}
           </p>
         </div>
-        <Button className="w-fit rounded-full px-5 shadow-sm">
+        <Button className="w-fit rounded-full px-5 shadow-md shadow-primary/20">
           <Plus className="mr-2 size-4" />
           Apply for Leave
         </Button>
@@ -212,7 +212,7 @@ export function LeaveManagement() {
           {(currentRole === "Team Lead" || currentRole === "Admin" || currentRole === "HR") && (
             <TabsTrigger
               value="pending"
-              className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              className="rounded-full px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
               <Clock className="mr-2 size-4" />
               {currentRole === "HR" || currentRole === "Admin" ? "Tier-2 HR Approvals" : "Pending My Approval"}
@@ -221,7 +221,7 @@ export function LeaveManagement() {
           {currentRole === "Employee" && (
             <TabsTrigger
               value="pending"
-              className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              className="rounded-full px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
               <Clock className="mr-2 size-4" />
               My Requests
@@ -229,7 +229,7 @@ export function LeaveManagement() {
           )}
           <TabsTrigger
             value="overview"
-            className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            className="rounded-full px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
           >
             <Calendar className="mr-2 size-4" />
             Company Overview
@@ -238,7 +238,7 @@ export function LeaveManagement() {
 
         {/* Pending Approval Tab */}
         <TabsContent value="pending" className="mt-0">
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 shadow-md ring-1 ring-border/40">
             <CardContent className="p-0">
               {filteredRequests.length > 0 ? (
                 <div className="overflow-x-auto">
@@ -390,7 +390,7 @@ export function LeaveManagement() {
           </div>
 
           {/* New Example Company/Team Leave Calendar */}
-          <Card className="mt-6 border-0 shadow-sm overflow-hidden">
+          <Card className="mt-6 border-0 shadow-md ring-1 ring-border/40 overflow-hidden">
             <div className="border-b border-border bg-muted/20 px-6 py-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-medium text-foreground">

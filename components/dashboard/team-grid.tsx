@@ -100,7 +100,7 @@ export function TeamGrid() {
       {/* Section Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10">
+          <div className="flex size-9 items-center justify-center rounded-2xl bg-primary/10">
             <Users className="size-4.5 text-primary" />
           </div>
           <div>

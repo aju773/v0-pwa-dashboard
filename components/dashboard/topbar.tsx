@@ -147,8 +147,7 @@ export function Topbar({ sidebarCollapsed, onMenuClick }: TopbarProps) {
   return (
     <header
       className={cn(
-        "fixed right-0 top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/80 px-3 sm:px-6 backdrop-blur-md transition-all duration-300",
-        // Mobile: full width. md+: offset by sidebar
+        "fixed right-0 top-0 z-30 flex h-16 items-center justify-between border-b border-border/60 bg-card/80 px-3 sm:px-6 backdrop-blur-xl transition-all duration-300",
         "left-0 md:left-20",
         !sidebarCollapsed && "lg:left-64"
       )}
@@ -172,7 +171,7 @@ export function Topbar({ sidebarCollapsed, onMenuClick }: TopbarProps) {
           <input
             type="text"
             placeholder="Search tasks, team members, or projects..."
-            className="h-10 w-full rounded-full border border-input bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            className="h-10 w-full rounded-full border-transparent bg-muted/50 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />
         </div>
       </div>
@@ -240,7 +239,7 @@ export function Topbar({ sidebarCollapsed, onMenuClick }: TopbarProps) {
               <span className="sr-only">Notifications ({unreadCount} unread)</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80 p-0">
+          <DropdownMenuContent align="end" className="w-80 p-0 rounded-2xl border-0 shadow-xl shadow-foreground/5">
             <DropdownMenuLabel className="flex items-center justify-between px-4 py-3">
               <span className="text-base font-semibold">Notifications</span>
               {unreadCount > 0 && (

@@ -30,10 +30,10 @@ export function TeamMemberCard({ member, onAssignTask }: TeamMemberCardProps) {
   return (
     <Card
       className={cn(
-        "relative overflow-hidden transition-all duration-200 hover:shadow-md",
-        isOnLeave && "border-destructive/30 bg-destructive/5",
-        isPending && "border-warning/30 bg-warning/5",
-        isActive && "border-success/30"
+        "relative overflow-hidden border-0 shadow-md ring-1 ring-border/40 transition-all duration-200 hover:shadow-lg",
+        isOnLeave && "ring-destructive/30 bg-destructive/5",
+        isPending && "ring-amber-500/30 bg-amber-50/50 dark:bg-amber-950/10",
+        isActive && "ring-emerald-500/20"
       )}
     >
       {/* Status Badge */}

@@ -485,7 +485,7 @@ export function InternalTickets() {
             </ToggleGroupItem>
           </ToggleGroup>
           
-          <Button className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+          <Button className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20">
             <Plus className="size-4 mr-2" />
             Raise Issue
           </Button>
@@ -495,7 +495,7 @@ export function InternalTickets() {
       {/* Split Pane Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[calc(100vh-16rem)]">
         {/* Left Column - Ticket List */}
-        <Card className="lg:col-span-1 border-border/60 shadow-sm overflow-hidden">
+        <Card className="lg:col-span-1 border-0 shadow-md ring-1 ring-border/40 overflow-hidden">
           <ScrollArea className="h-[calc(100vh-18rem)]">
             <div className="p-3 space-y-2">
               {filteredTickets.length === 0 ? (
@@ -519,7 +519,7 @@ export function InternalTickets() {
         </Card>
 
         {/* Right Column - Ticket Detail */}
-        <Card className="lg:col-span-2 border-border/60 shadow-sm overflow-hidden">
+        <Card className="lg:col-span-2 border-0 shadow-md ring-1 ring-border/40 overflow-hidden">
           {selectedTicket ? (
             <TicketDetail ticket={selectedTicket} />
           ) : (

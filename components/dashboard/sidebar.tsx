@@ -138,10 +138,10 @@ export function Sidebar({
               href={item.href}
               onClick={onMobileClose}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-sidebar-accent text-sidebar-primary"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  ? "bg-sidebar-accent text-sidebar-primary shadow-sm"
+                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
               )}
             >
               <item.icon className={cn("size-5 shrink-0", isActive && "text-sidebar-primary")} />
@@ -158,10 +158,10 @@ export function Sidebar({
             href="/settings"
             onClick={onMobileClose}
             className={cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+              "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
               activeItem === "Settings"
-                ? "bg-sidebar-accent text-sidebar-primary"
-                : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                ? "bg-sidebar-accent text-sidebar-primary shadow-sm"
+                : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
             )}
           >
             <Settings className={cn("size-5 shrink-0", activeItem === "Settings" && "text-sidebar-primary")} />
@@ -171,7 +171,7 @@ export function Sidebar({
 
         {/* User Profile */}
         <div className={cn(
-          "mt-3 flex items-center gap-3 rounded-xl bg-sidebar-accent/50 p-3 transition-all",
+          "mt-3 flex items-center gap-3 rounded-2xl bg-sidebar-accent/40 p-3 transition-all shadow-sm ring-1 ring-sidebar-border/50",
           !showLabels && "justify-center"
         )}>
           <Avatar className="size-9 ring-2 ring-primary/20">

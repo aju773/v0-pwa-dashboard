@@ -144,9 +144,9 @@ export function HRDirectory() {
 
       {/* Stats Row */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-        <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-card">
+        <Card className="border-0 shadow-md ring-1 ring-border/40 bg-gradient-to-br from-card to-card">
           <CardContent className="flex items-center gap-4 p-5">
-            <div className="flex size-12 items-center justify-center rounded-xl bg-emerald-500/10">
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-emerald-500/10">
               <UserCheck className="size-6 text-emerald-600" />
             </div>
             <div>
@@ -155,9 +155,9 @@ export function HRDirectory() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 shadow-md ring-1 ring-border/40">
           <CardContent className="flex items-center gap-4 p-5">
-            <div className="flex size-12 items-center justify-center rounded-xl bg-orange-500/10">
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-orange-500/10">
               <UserSearch className="size-6 text-orange-600" />
             </div>
             <div>
@@ -166,9 +166,9 @@ export function HRDirectory() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 shadow-md ring-1 ring-border/40">
           <CardContent className="flex items-center gap-4 p-5">
-            <div className="flex size-12 items-center justify-center rounded-xl bg-destructive/10">
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-destructive/10">
               <UserX className="size-6 text-destructive" />
             </div>
             <div>
@@ -180,7 +180,7 @@ export function HRDirectory() {
       </div>
 
       {/* Directory Table */}
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-md ring-1 ring-border/40">
         <div className="p-4 border-b border-border/50">
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -188,7 +188,7 @@ export function HRDirectory() {
               placeholder="Search directory..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-10 rounded-xl bg-muted/40 pl-9 text-sm focus-visible:ring-primary"
+              className="h-10 rounded-full bg-muted/50 border-transparent pl-9 text-sm focus-visible:ring-primary focus:border-primary focus:bg-background transition-colors"
             />
           </div>
         </div>
