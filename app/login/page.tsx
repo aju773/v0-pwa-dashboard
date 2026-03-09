@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Hexagon, Eye, EyeOff, Building2, Loader2 } from "lucide-react"
+import Image from "next/image"
+import { Eye, EyeOff, Building2, Loader2 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -43,8 +44,15 @@ export default function LoginPage() {
         <CardHeader className="space-y-4 text-center pb-2">
           {/* Logo */}
           <div className="flex justify-center">
-            <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Hexagon className="size-8 text-primary" strokeWidth={1.5} />
+            <div className="size-14 rounded-2xl bg-white shadow-sm ring-1 ring-border/50 flex items-center justify-center overflow-hidden">
+              <Image
+                src="/photo_2026-03-09_10-01-31.jpg"
+                alt="Avanzo Logo"
+                width={56}
+                height={56}
+                className="object-contain"
+                priority
+              />
             </div>
           </div>
           
@@ -150,37 +158,7 @@ export default function LoginPage() {
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4 pt-2">
-          {/* Divider */}
-          <div className="relative w-full">
-            <Separator className="my-2" />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-3 text-xs text-muted-foreground">
-              or continue with
-            </span>
-          </div>
-
-          {/* SSO Button */}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleSSOLogin}
-            disabled={isLoading}
-            className="w-full h-11 rounded-full font-medium text-sm border-border/80 hover:bg-muted/50 transition-all"
-          >
-            <Building2 className="size-4 mr-2" />
-            Sign in with Company SSO
-          </Button>
-
-          {/* Footer text */}
-          <p className="text-xs text-center text-muted-foreground pt-2">
-            By signing in, you agree to our{" "}
-            <a href="#" className="text-primary hover:underline">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-primary hover:underline">
-              Privacy Policy
-            </a>
-          </p>
+          {/* Footer removed per user request */}
         </CardFooter>
       </Card>
 
