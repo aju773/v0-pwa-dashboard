@@ -9,14 +9,14 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'AZ Operating System | Team Dashboard',
-  description: 'AZ Tech Solutions enterprise dashboard for team management, daily standups, attendance tracking, and project management.',
+  title: 'Workspace | Team Dashboard',
+  description: 'Modern team management dashboard for daily standups, attendance tracking, and project management.',
   generator: 'v0.app',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'AZ Tech',
+    title: 'Workspace',
   },
   icons: {
     icon: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#6b21a8',
+  themeColor: '#6366f1',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,

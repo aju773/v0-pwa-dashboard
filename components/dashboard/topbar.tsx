@@ -118,7 +118,7 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
             >
               <Bell className="size-5 text-muted-foreground" />
               {unreadCount > 0 && (
-                <span className="absolute right-2 top-2 size-2 rounded-full bg-[oklch(0.65_0.22_330)] ring-2 ring-background" />
+                <span className="absolute right-2 top-2 size-2 rounded-full bg-destructive ring-2 ring-background" />
               )}
               <span className="sr-only">Notifications ({unreadCount} unread)</span>
             </Button>
@@ -146,7 +146,7 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
                     className={cn(
                       "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full",
                       notification.priority === "high"
-                        ? "bg-[oklch(0.65_0.22_330)]/10 text-[oklch(0.65_0.22_330)]"
+                        ? "bg-destructive/10 text-destructive"
                         : "bg-primary/10 text-primary"
                     )}
                   >
@@ -157,7 +157,7 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
                       className={cn(
                         "text-sm leading-tight",
                         notification.priority === "high"
-                          ? "font-semibold text-[oklch(0.65_0.22_330)]"
+                          ? "font-semibold text-destructive"
                           : "font-medium text-foreground"
                       )}
                     >

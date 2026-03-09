@@ -36,33 +36,29 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
         collapsed ? "w-20" : "w-64"
       )}
     >
-      {/* Logo & Branding */}
-      <div className="flex flex-col items-center border-b border-sidebar-border px-4 py-4">
-        {!collapsed ? (
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm ring-1 ring-white/20">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
-                  alt="AZ Tech Solutions"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-2xl font-bold text-white tracking-tight">az</span>
+      {/* Logo & Toggle */}
+      <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
+        {!collapsed && (
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-lg overflow-hidden bg-background">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
+                alt="AZ Tech Solutions"
+                width={36}
+                height={36}
+                className="object-contain"
+              />
             </div>
-            <span className="text-xs font-medium text-sidebar-foreground/60 tracking-wide uppercase">
-              operating system
-            </span>
+            <span className="text-lg font-semibold text-sidebar-foreground">AZ Tech</span>
           </div>
-        ) : (
-          <div className="flex size-10 items-center justify-center rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm ring-1 ring-white/20">
+        )}
+        {collapsed && (
+          <div className="mx-auto flex size-9 items-center justify-center rounded-lg overflow-hidden bg-background">
             <Image
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
               alt="AZ Tech Solutions"
-              width={40}
-              height={40}
+              width={36}
+              height={36}
               className="object-contain"
             />
           </div>
@@ -74,7 +70,7 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
         variant="ghost"
         size="icon-sm"
         onClick={onToggle}
-        className="absolute -right-3 top-24 z-50 size-6 rounded-full border border-border bg-card shadow-md hover:bg-accent text-foreground"
+        className="absolute -right-3 top-20 z-50 size-6 rounded-full border border-border bg-card shadow-md hover:bg-accent"
       >
         {collapsed ? (
           <ChevronRight className="size-3.5" />
@@ -92,13 +88,13 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
               key={item.label}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-200",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-white/10 text-white backdrop-blur-sm"
-                  : "text-sidebar-foreground/70 hover:bg-white/5 hover:text-sidebar-foreground"
+                  ? "bg-sidebar-accent text-sidebar-primary"
+                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
               )}
             >
-              <item.icon className={cn("size-5 shrink-0", isActive && "text-white")} />
+              <item.icon className={cn("size-5 shrink-0", isActive && "text-sidebar-primary")} />
               {!collapsed && <span>{item.label}</span>}
             </a>
           )
@@ -109,7 +105,7 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
       <div className="border-t border-sidebar-border p-3">
         <a
           href="#"
-          className="flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium text-sidebar-foreground/70 transition-all hover:bg-white/5 hover:text-sidebar-foreground"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-sidebar-foreground/70 transition-all hover:bg-sidebar-accent hover:text-sidebar-foreground"
         >
           <Settings className="size-5 shrink-0" />
           {!collapsed && <span>Settings</span>}
@@ -117,17 +113,17 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
 
         {/* User Profile */}
         <div className={cn(
-          "mt-3 flex items-center gap-3 rounded-xl bg-white/5 p-3 transition-all",
+          "mt-3 flex items-center gap-3 rounded-xl bg-sidebar-accent/50 p-3 transition-all",
           collapsed && "justify-center"
         )}>
-          <Avatar className="size-9 ring-2 ring-white/20">
+          <Avatar className="size-9 ring-2 ring-primary/20">
             <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=TeamLead" alt="User" />
-            <AvatarFallback className="bg-white/10 text-white text-xs">TL</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground text-xs">TL</AvatarFallback>
           </Avatar>
           {!collapsed && (
             <div className="flex-1 overflow-hidden">
-              <p className="truncate text-sm font-medium text-white">Alex Morgan</p>
-              <p className="truncate text-xs text-sidebar-foreground/60">Team Lead</p>
+              <p className="truncate text-sm font-medium text-sidebar-foreground">Alex Morgan</p>
+              <p className="truncate text-xs text-muted-foreground">Team Lead</p>
             </div>
           )}
         </div>
