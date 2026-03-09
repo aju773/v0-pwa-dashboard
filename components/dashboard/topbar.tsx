@@ -11,12 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, Bell, Calendar, AlertTriangle, UserCheck, ChevronDown, MonitorStop, Sun, Moon } from "lucide-react"
+import { Search, Bell, Calendar, AlertTriangle, UserCheck, ChevronDown, MonitorStop, Sun, Moon, Menu } from "lucide-react"
 import { useRole, Role } from "./role-context"
 import { useTheme } from "next-themes"
 
 interface TopbarProps {
   sidebarCollapsed: boolean
+  onMenuClick?: () => void
 }
 
 interface Notification {
@@ -112,7 +113,7 @@ const mockNotifications: Record<Role, Notification[]> = {
   ]
 }
 
-export function Topbar({ sidebarCollapsed }: TopbarProps) {
+export function Topbar({ sidebarCollapsed, onMenuClick }: TopbarProps) {
   const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
   useEffect(() => {
@@ -146,22 +147,38 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
   return (
     <header
       className={cn(
-        "fixed right-0 top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/80 px-6 backdrop-blur-md transition-all duration-300",
-        sidebarCollapsed ? "left-20" : "left-64"
+        "fixed right-0 top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/80 px-3 sm:px-6 backdrop-blur-md transition-all duration-300",
+        // Mobile: full width. md+: offset by sidebar
+        "left-0 md:left-20",
+        !sidebarCollapsed && "lg:left-64"
       )}
     >
-      {/* Search Bar */}
-      <div className="relative w-full max-w-md">
-        <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Search tasks, team members, or projects..."
-          className="h-10 w-full rounded-full border border-input bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-        />
+      {/* Left Section: Hamburger + Search */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        {/* Mobile hamburger */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="shrink-0 rounded-full md:hidden"
+          onClick={onMenuClick}
+        >
+          <Menu className="size-5" />
+          <span className="sr-only">Open menu</span>
+        </Button>
+
+        {/* Search Bar — hidden on very small screens */}
+        <div className="relative hidden sm:block w-full max-w-md">
+          <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search tasks, team members, or projects..."
+            className="h-10 w-full rounded-full border border-input bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+          />
+        </div>
       </div>
 
       {/* Right Section */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1 sm:gap-2 md:gap-4 shrink-0">
         {/* Role Switcher (For Demo Purposes) */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -57,7 +57,7 @@ export function CreateProjectModal({ open, onOpenChange, onConfirm }: CreateProj
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="my-4 space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="clientName">Select Client</Label>
               <Select
@@ -112,8 +112,8 @@ export function CreateProjectModal({ open, onOpenChange, onConfirm }: CreateProj
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 border-t pt-4">
-            <div className="col-span-2 space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t pt-4">
+            <div className="sm:col-span-2 space-y-2">
               <Label htmlFor="milestoneName">Initial Milestone</Label>
               <div className="relative">
                 <Target className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -154,7 +154,7 @@ export function CreateProjectModal({ open, onOpenChange, onConfirm }: CreateProj
             <Button
               type="submit"
               disabled={!formData.clientName || !formData.projectName || !formData.serviceType}
-              className="rounded-full shadow-md hover:shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white px-6"
+              className="rounded-full shadow-md hover:shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground px-6"
             >
               <Rocket className="mr-2 size-4" />
               Initialize Project

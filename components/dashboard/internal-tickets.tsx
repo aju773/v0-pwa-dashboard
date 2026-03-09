@@ -357,7 +357,7 @@ function TicketDetail({ ticket }: { ticket: Ticket }) {
               <Button 
                 onClick={handleResolve}
                 disabled={isSubmitting || !replyText.trim()}
-                className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-6"
+                className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6"
               >
                 {isSubmitting ? (
                   <>
