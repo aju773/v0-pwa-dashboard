@@ -11,7 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, Bell, Calendar, AlertTriangle, UserCheck } from "lucide-react"
+import { Search, Bell, Calendar, AlertTriangle, UserCheck, ChevronDown, MonitorStop } from "lucide-react"
+import { useRole, Role } from "./role-context"
 
 interface TopbarProps {
   sidebarCollapsed: boolean
@@ -27,35 +28,88 @@ interface Notification {
   read: boolean
 }
 
-const notifications: Notification[] = [
-  {
-    id: "1",
-    title: "Leave Request",
-    description: "John Smith requested annual leave for Dec 20-24",
-    time: "10 min ago",
-    priority: "normal",
-    icon: Calendar,
-    read: false,
-  },
-  {
-    id: "2",
-    title: "Urgent: Critical Assignment",
-    description: "You were assigned a critical incident during your scheduled leave",
-    time: "25 min ago",
-    priority: "high",
-    icon: AlertTriangle,
-    read: false,
-  },
-  {
-    id: "3",
-    title: "Attendance Updated",
-    description: "Maria Garcia clocked in at 8:45 AM",
-    time: "1 hour ago",
-    priority: "normal",
-    icon: UserCheck,
-    read: true,
-  },
-]
+const mockNotifications: Record<Role, Notification[]> = {
+  "Employee": [
+    {
+      id: "e1",
+      title: "Task Assigned",
+      description: "Alex Morgan assigned you to Security Audit Q4",
+      time: "10 min ago",
+      priority: "high",
+      icon: AlertTriangle,
+      read: false,
+    },
+    {
+      id: "e2",
+      title: "Leave Approved",
+      description: "Your annual leave for Dec 20-24 was approved.",
+      time: "2 hours ago",
+      priority: "normal",
+      icon: Calendar,
+      read: true,
+    }
+  ],
+  "Team Lead": [
+    {
+      id: "t1",
+      title: "Pending Leave Request",
+      description: "Sarah Chen requested sick leave for today",
+      time: "5 min ago",
+      priority: "normal",
+      icon: Calendar,
+      read: false,
+    },
+    {
+      id: "t2",
+      title: "Blocker Raised",
+      description: "Jordan Lee is blocked on AWS Migration",
+      time: "1 hour ago",
+      priority: "high",
+      icon: AlertTriangle,
+      read: false,
+    }
+  ],
+  "HR": [
+    {
+      id: "h1",
+      title: "Tier-2 Leave Escalation",
+      description: "Marcus Thompson requested 14 days leave",
+      time: "10 min ago",
+      priority: "normal",
+      icon: Calendar,
+      read: false,
+    },
+    {
+        id: "h2",
+        title: "New Hire Onboarding",
+        description: "Please complete profile for new Engineering hire",
+        time: "3 hours ago",
+        priority: "normal",
+        icon: UserCheck,
+        read: true,
+      }
+  ],
+  "Admin": [
+    {
+      id: "a1",
+      title: "Urgent: Tier-3 Approval Needed",
+      description: "Marcus Thompson 14-day leave pending final sign-off",
+      time: "Just now",
+      priority: "high",
+      icon: AlertTriangle,
+      read: false,
+    },
+    {
+      id: "a2",
+      title: "System Update",
+      description: "v2.4.1 deployed successfully",
+      time: "1 day ago",
+      priority: "normal",
+      icon: UserCheck,
+      read: true,
+    }
+  ]
+}
 
 export function Topbar({ sidebarCollapsed }: TopbarProps) {
   const [currentTime, setCurrentTime] = useState<Date>(new Date())
@@ -81,7 +135,11 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
     })
   }
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const { currentRole, setCurrentRole } = useRole()
+  const roles: Role[] = ["Employee", "Team Lead", "HR", "Admin"]
+  
+  const activeNotifications = mockNotifications[currentRole] || []
+  const unreadCount = activeNotifications.filter((n) => !n.read).length
 
   return (
     <header
@@ -102,6 +160,34 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
 
       {/* Right Section */}
       <div className="flex items-center gap-4">
+        {/* Role Switcher (For Demo Purposes) */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="hidden h-9 items-center gap-2 rounded-full border-dashed md:flex">
+              <MonitorStop className="size-4 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">View as:</span>
+              <span className="text-sm font-medium">{currentRole}</span>
+              <ChevronDown className="size-3.5 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 rounded-xl">
+            <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Profile</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {roles.map((role) => (
+              <DropdownMenuItem
+                key={role}
+                onClick={() => setCurrentRole(role)}
+                className={cn(
+                  "cursor-pointer rounded-lg text-sm",
+                  currentRole === role && "bg-primary/10 font-medium text-primary"
+                )}
+              >
+                {role}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         {/* Date/Time Display */}
         <div className="hidden text-right md:block">
           <p className="text-sm font-medium text-foreground">{formatTime(currentTime)}</p>
@@ -134,7 +220,7 @@ export function Topbar({ sidebarCollapsed }: TopbarProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="m-0" />
             <div className="max-h-80 overflow-y-auto">
-              {notifications.map((notification) => (
+              {activeNotifications.map((notification) => (
                 <DropdownMenuItem
                   key={notification.id}
                   className={cn(

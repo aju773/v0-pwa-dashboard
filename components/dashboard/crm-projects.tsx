@@ -25,6 +25,9 @@ import {
   CheckCircle2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { CreateClientModal } from "./create-client-modal"
+import { CreateProjectModal } from "./create-project-modal"
+import { useRole } from "./role-context"
 
 type ServiceType =
   | "Cybersecurity: Incident Handling"
@@ -400,6 +403,8 @@ function ProjectCard({
   onAssignMember: (projectId: string, memberId: string) => void
 }) {
   const serviceConfig = serviceTypeConfig[project.serviceType]
+  const { currentRole } = useRole()
+  const canModify = currentRole === "Team Lead" || currentRole === "Admin"
 
   return (
     <Card className="border-0 shadow-sm transition-shadow hover:shadow-md">
@@ -470,12 +475,14 @@ function ProjectCard({
             </div>
 
             {/* Assign Button */}
-            <div className="ml-2">
-              <AssignTeamPopover
-                projectId={project.id}
-                onAssign={onAssignMember}
-              />
-            </div>
+            {canModify && (
+              <div className="ml-2">
+                <AssignTeamPopover
+                  projectId={project.id}
+                  onAssign={onAssignMember}
+                />
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
@@ -484,19 +491,55 @@ function ProjectCard({
 }
 
 export function CRMProjects() {
-  const [selectedService, setSelectedService] = useState<ServiceType | "all">(
-    "all"
-  )
+  const [selectedService, setSelectedService] = useState<ServiceType | "all">("all")
+  const [projects, setProjects] = useState<ClientProject[]>(clientProjects)
+  const [clientModalOpen, setClientModalOpen] = useState(false)
+  const [projectModalOpen, setProjectModalOpen] = useState(false)
+  
+  const { currentRole } = useRole()
+  const canModify = currentRole === "Team Lead" || currentRole === "Admin"
 
   const handleAssignMember = (projectId: string, memberId: string) => {
-    // Handle assigning member to project
-    console.log(`Assigning member ${memberId} to project ${projectId}`)
+    const member = availableTeamMembers.find(m => m.id === memberId)
+    if (!member) return
+
+    setProjects(prev => prev.map(p => {
+      if (p.id === projectId) {
+        // Avoid duplicate assignments
+        if (p.assignedTeam.some(t => t.id === memberId)) return p
+        return { ...p, assignedTeam: [...p.assignedTeam, member] }
+      }
+      return p
+    }))
+  }
+
+  const handleCreateClient = (clientName: string) => {
+    // In a real app this would save to a DB. For now just close the modal.
+    setClientModalOpen(false)
+  }
+
+  const handleCreateProject = (data: any) => {
+    const newProject: ClientProject = {
+      id: Math.random().toString(36).substr(2, 9),
+      clientName: data.clientName,
+      serviceType: data.serviceType as ServiceType,
+      projectName: data.projectName,
+      milestone: {
+        name: data.milestoneName,
+        current: 0,
+        total: parseInt(data.milestoneTotal, 10) || 10,
+        percentage: 0,
+      },
+      assignedTeam: [],
+    }
+    setProjects([newProject, ...projects])
+    setProjectModalOpen(false)
   }
 
   const filteredProjects =
     selectedService === "all"
-      ? clientProjects
-      : clientProjects.filter((p) => p.serviceType === selectedService)
+      ? projects
+      : projects.filter((p) => p.serviceType === selectedService)
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -548,17 +591,25 @@ export function CRMProjects() {
           </DropdownMenu>
 
           {/* Action Buttons */}
-          <Button
-            variant="outline"
-            className="h-10 rounded-full border-muted bg-card px-5 shadow-sm"
-          >
-            <Building2 className="mr-2 size-4" />
-            New Client
-          </Button>
-          <Button className="h-10 rounded-full px-5 shadow-sm">
-            <Plus className="mr-2 size-4" />
-            Create Project
-          </Button>
+          {canModify && (
+            <>
+              <Button
+                variant="outline"
+                className="h-10 rounded-full border-muted bg-card px-5 shadow-sm"
+                onClick={() => setClientModalOpen(true)}
+              >
+                <Building2 className="mr-2 size-4" />
+                New Client
+              </Button>
+              <Button 
+                className="h-10 rounded-full px-5 shadow-sm"
+                onClick={() => setProjectModalOpen(true)}
+              >
+                <Plus className="mr-2 size-4" />
+                Create Project
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
@@ -587,13 +638,30 @@ export function CRMProjects() {
               No projects match the selected filter. Try a different service
               type or create a new project.
             </p>
-            <Button className="mt-4 rounded-full">
-              <Plus className="mr-2 size-4" />
-              Create Project
-            </Button>
+            {canModify && (
+              <Button 
+                className="mt-4 rounded-full"
+                onClick={() => setProjectModalOpen(true)}
+              >
+                <Plus className="mr-2 size-4" />
+                Create Project
+              </Button>
+            )}
           </CardContent>
         </Card>
       )}
+
+      {/* Modals */}
+      <CreateClientModal
+        open={clientModalOpen}
+        onOpenChange={setClientModalOpen}
+        onConfirm={handleCreateClient}
+      />
+      <CreateProjectModal
+        open={projectModalOpen}
+        onOpenChange={setProjectModalOpen}
+        onConfirm={handleCreateProject}
+      />
     </div>
   )
 }

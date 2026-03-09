@@ -13,8 +13,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Plus, Check, X, Clock, Users, Calendar, TrendingUp } from "lucide-react"
+import { Plus, Check, X, Clock, Users, Calendar, TrendingUp, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRole } from "./role-context"
 
 type LeaveStatus = "pending_lead" | "pending_hr" | "pending_admin" | "approved" | "rejected"
 type LeaveType = "Full Day" | "Half Day"
@@ -169,6 +170,7 @@ function StatCard({
 
 export function LeaveManagement() {
   const [activeTab, setActiveTab] = useState("pending")
+  const { currentRole } = useRole()
 
   const handleApprove = (id: string) => {
     // Handle approval logic
@@ -201,13 +203,24 @@ export function LeaveManagement() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="mb-6 h-11 w-full justify-start rounded-xl bg-muted/60 p-1 sm:w-auto">
-          <TabsTrigger
-            value="pending"
-            className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
-          >
-            <Clock className="mr-2 size-4" />
-            Pending My Approval
-          </TabsTrigger>
+          {(currentRole === "Team Lead" || currentRole === "Admin" || currentRole === "HR") && (
+            <TabsTrigger
+              value="pending"
+              className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Clock className="mr-2 size-4" />
+              {currentRole === "HR" || currentRole === "Admin" ? "Tier-2 HR Approvals" : "Pending My Approval"}
+            </TabsTrigger>
+          )}
+          {currentRole === "Employee" && (
+            <TabsTrigger
+              value="pending"
+              className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Clock className="mr-2 size-4" />
+              My Requests
+            </TabsTrigger>
+          )}
           <TabsTrigger
             value="overview"
             className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
@@ -280,7 +293,8 @@ export function LeaveManagement() {
                         <StatusBadge status={request.status} />
                       </TableCell>
                       <TableCell className="pr-6 text-right">
-                        {request.status === "pending_lead" && (
+                        {(currentRole === "Team Lead" && request.status === "pending_lead") || 
+                         ((currentRole === "HR" || currentRole === "Admin") && request.status === "pending_hr") ? (
                           <div className="flex items-center justify-end gap-2">
                             <Button
                               variant="ghost"
@@ -301,9 +315,14 @@ export function LeaveManagement() {
                               <span className="sr-only">Reject</span>
                             </Button>
                           </div>
-                        )}
-                        {request.status !== "pending_lead" && (
-                          <span className="text-xs text-muted-foreground">—</span>
+                        ) : (
+                          <div className="flex justify-end">
+                            {request.status === "approved" ? (
+                              <CheckCircle2 className="size-5 text-emerald-500" />
+                            ) : (
+                              <span className="text-xs text-muted-foreground">—</span>
+                            )}
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>

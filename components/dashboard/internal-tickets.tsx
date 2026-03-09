@@ -19,6 +19,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Textarea } from "@/components/ui/textarea"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
+import { useRole } from "./role-context"
 
 interface Ticket {
   id: string
@@ -243,6 +244,8 @@ function TicketCard({
 function TicketDetail({ ticket }: { ticket: Ticket }) {
   const [replyText, setReplyText] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { currentRole } = useRole()
+  const canResolve = currentRole === "Team Lead" || currentRole === "Admin" || currentRole === "HR"
 
   const handleResolve = () => {
     setIsSubmitting(true)
@@ -333,7 +336,7 @@ function TicketDetail({ ticket }: { ticket: Ticket }) {
       </ScrollArea>
 
       {/* Reply Box */}
-      {ticket.status === "unresolved" && (
+      {ticket.status === "unresolved" && canResolve && (
         <div className="p-4 border-t border-border bg-card">
           <div className="space-y-3">
             <Textarea
@@ -370,6 +373,11 @@ function TicketDetail({ ticket }: { ticket: Ticket }) {
               </Button>
             </div>
           </div>
+        </div>
+      )}
+      {ticket.status === "unresolved" && !canResolve && (
+        <div className="p-6 border-t border-border bg-muted/20 text-center">
+            <p className="text-sm text-muted-foreground">A Team Lead or Admin must resolve this ticket.</p>
         </div>
       )}
 

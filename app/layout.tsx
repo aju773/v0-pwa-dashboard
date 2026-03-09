@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { RoleProvider } from '@/components/dashboard/role-context'
 import './globals.css'
 
 const inter = Inter({ 
@@ -53,7 +54,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+        <RoleProvider>
+          {children}
+        </RoleProvider>
         <Analytics />
       </body>
     </html>

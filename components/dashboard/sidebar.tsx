@@ -1,14 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useRole } from "./role-context"
 import {
   LayoutDashboard,
   CalendarCheck,
   Briefcase,
   Ticket,
+  Users,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -23,11 +25,36 @@ interface SidebarProps {
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/" },
   { icon: CalendarCheck, label: "Attendance & Leaves", href: "/leaves" },
+  { icon: Users, label: "Directory", href: "/directory" },
   { icon: Briefcase, label: "CRM & Projects", href: "/crm" },
   { icon: Ticket, label: "Internal Tickets", href: "/tickets" },
 ]
 
 export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: SidebarProps) {
+  const { currentRole } = useRole()
+
+  const visibleNavItems = navItems.filter((item) => {
+    if (currentRole === "Employee") {
+      // Employees don't see the global CRM, Internal Tickets manager, or Directory
+      if (
+        item.label === "CRM & Projects" ||
+        item.label === "Internal Tickets" ||
+        item.label === "Directory"
+      ) {
+        return false
+      }
+    }
+    
+    if (currentRole === "Team Lead") {
+      // Team Leads don't see the HR Directory
+      if (item.label === "Directory") {
+        return false
+      }
+    }
+
+    return true
+  })
+
   return (
     <aside
       className={cn(
@@ -68,10 +95,10 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 p-3">
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const isActive = item.label === activeItem
           return (
-            <a
+            <Link
               key={item.label}
               href={item.href}
               className={cn(
@@ -83,20 +110,27 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
             >
               <item.icon className={cn("size-5 shrink-0", isActive && "text-sidebar-primary")} />
               {!collapsed && <span>{item.label}</span>}
-            </a>
+            </Link>
           )
         })}
       </nav>
 
       {/* Bottom Section */}
       <div className="border-t border-sidebar-border p-3">
-        <a
-          href="#"
-          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-sidebar-foreground/70 transition-all hover:bg-sidebar-accent hover:text-sidebar-foreground"
-        >
-          <Settings className="size-5 shrink-0" />
-          {!collapsed && <span>Settings</span>}
-        </a>
+        {currentRole === "Admin" && (
+          <Link
+            href="/settings"
+            className={cn(
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+              activeItem === "Settings"
+                ? "bg-sidebar-accent text-sidebar-primary"
+                : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            )}
+          >
+            <Settings className={cn("size-5 shrink-0", activeItem === "Settings" && "text-sidebar-primary")} />
+            {!collapsed && <span>Settings</span>}
+          </Link>
+        )}
 
         {/* User Profile */}
         <div className={cn(
@@ -104,13 +138,20 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
           collapsed && "justify-center"
         )}>
           <Avatar className="size-9 ring-2 ring-primary/20">
-            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=TeamLead" alt="User" />
-            <AvatarFallback className="bg-primary text-primary-foreground text-xs">TL</AvatarFallback>
+            <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentRole}`} alt="User" />
+            <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold uppercase">
+              {currentRole.substring(0, 3)}
+            </AvatarFallback>
           </Avatar>
           {!collapsed && (
             <div className="flex-1 overflow-hidden">
-              <p className="truncate text-sm font-medium text-sidebar-foreground">Alex Morgan</p>
-              <p className="truncate text-xs text-muted-foreground">Team Lead</p>
+              <p className="truncate text-sm font-medium text-sidebar-foreground">
+                {currentRole === "Employee" && "John Doe"}
+                {currentRole === "Team Lead" && "Alex Morgan"}
+                {currentRole === "HR" && "Maria Garcia"}
+                {currentRole === "Admin" && "SuperUser"}
+              </p>
+              <p className="truncate text-xs text-muted-foreground">{currentRole}</p>
             </div>
           )}
         </div>
