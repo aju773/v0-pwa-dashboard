@@ -4,90 +4,98 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.985 0.002 240);
-  --foreground: oklch(0.2 0.02 260);
+  /* AZ Tech Solutions Branding - Deep Purple/Magenta Theme */
+  --background: oklch(0.97 0.005 300);
+  --foreground: oklch(0.2 0.03 300);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.02 260);
+  --card-foreground: oklch(0.2 0.03 300);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 260);
-  --primary: oklch(0.55 0.18 250);
+  --popover-foreground: oklch(0.2 0.03 300);
+  --primary: oklch(0.45 0.2 300);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0.01 250);
-  --secondary-foreground: oklch(0.35 0.05 250);
-  --muted: oklch(0.96 0.005 240);
-  --muted-foreground: oklch(0.5 0.02 260);
-  --accent: oklch(0.92 0.03 160);
-  --accent-foreground: oklch(0.25 0.05 160);
-  --destructive: oklch(0.6 0.2 25);
+  --secondary: oklch(0.95 0.02 300);
+  --secondary-foreground: oklch(0.35 0.08 300);
+  --muted: oklch(0.96 0.01 300);
+  --muted-foreground: oklch(0.5 0.03 300);
+  --accent: oklch(0.9 0.04 300);
+  --accent-foreground: oklch(0.3 0.1 300);
+  --destructive: oklch(0.65 0.22 330);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.92 0.005 260);
-  --input: oklch(0.94 0.005 260);
-  --ring: oklch(0.55 0.18 250);
-  --chart-1: oklch(0.55 0.18 250);
-  --chart-2: oklch(0.65 0.15 160);
+  --border: oklch(0.92 0.015 300);
+  --input: oklch(0.94 0.01 300);
+  --ring: oklch(0.45 0.2 300);
+  --chart-1: oklch(0.45 0.2 300);
+  --chart-2: oklch(0.6 0.2 330);
   --chart-3: oklch(0.7 0.12 80);
-  --chart-4: oklch(0.6 0.18 320);
-  --chart-5: oklch(0.55 0.15 200);
+  --chart-4: oklch(0.55 0.18 280);
+  --chart-5: oklch(0.5 0.15 260);
   --radius: 1rem;
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.2 0.02 260);
-  --sidebar-primary: oklch(0.55 0.18 250);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0.02 250);
-  --sidebar-accent-foreground: oklch(0.35 0.05 250);
-  --sidebar-border: oklch(0.94 0.005 260);
-  --sidebar-ring: oklch(0.55 0.18 250);
   
-  /* Status colors */
+  /* Dark purple sidebar */
+  --sidebar: oklch(0.22 0.08 300);
+  --sidebar-foreground: oklch(0.95 0.01 300);
+  --sidebar-primary: oklch(0.95 0.01 300);
+  --sidebar-primary-foreground: oklch(0.22 0.08 300);
+  --sidebar-accent: oklch(0.32 0.1 300);
+  --sidebar-accent-foreground: oklch(0.95 0.01 300);
+  --sidebar-border: oklch(0.32 0.08 300);
+  --sidebar-ring: oklch(0.6 0.2 330);
+  
+  /* Status colors - using magenta for alerts */
   --success: oklch(0.65 0.15 145);
   --success-foreground: oklch(1 0 0);
   --warning: oklch(0.75 0.15 80);
   --warning-foreground: oklch(0.3 0.1 80);
-  --info: oklch(0.6 0.12 230);
+  --info: oklch(0.55 0.15 280);
   --info-foreground: oklch(1 0 0);
+  --alert: oklch(0.65 0.22 330);
+  --alert-foreground: oklch(1 0 0);
 }
 
 .dark {
-  --background: oklch(0.15 0.015 260);
-  --foreground: oklch(0.95 0.005 260);
-  --card: oklch(0.18 0.015 260);
-  --card-foreground: oklch(0.95 0.005 260);
-  --popover: oklch(0.18 0.015 260);
-  --popover-foreground: oklch(0.95 0.005 260);
-  --primary: oklch(0.65 0.18 250);
+  /* AZ Tech Solutions Dark Theme */
+  --background: oklch(0.15 0.03 300);
+  --foreground: oklch(0.95 0.01 300);
+  --card: oklch(0.18 0.035 300);
+  --card-foreground: oklch(0.95 0.01 300);
+  --popover: oklch(0.18 0.035 300);
+  --popover-foreground: oklch(0.95 0.01 300);
+  --primary: oklch(0.6 0.2 300);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.25 0.02 260);
-  --secondary-foreground: oklch(0.9 0.01 260);
-  --muted: oklch(0.25 0.015 260);
-  --muted-foreground: oklch(0.65 0.02 260);
-  --accent: oklch(0.3 0.05 160);
-  --accent-foreground: oklch(0.9 0.02 160);
-  --destructive: oklch(0.55 0.2 25);
+  --secondary: oklch(0.25 0.04 300);
+  --secondary-foreground: oklch(0.9 0.02 300);
+  --muted: oklch(0.25 0.03 300);
+  --muted-foreground: oklch(0.65 0.03 300);
+  --accent: oklch(0.3 0.06 300);
+  --accent-foreground: oklch(0.9 0.02 300);
+  --destructive: oklch(0.6 0.22 330);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.28 0.015 260);
-  --input: oklch(0.25 0.015 260);
-  --ring: oklch(0.65 0.18 250);
-  --chart-1: oklch(0.65 0.18 250);
-  --chart-2: oklch(0.7 0.15 160);
+  --border: oklch(0.28 0.04 300);
+  --input: oklch(0.25 0.035 300);
+  --ring: oklch(0.6 0.2 300);
+  --chart-1: oklch(0.6 0.2 300);
+  --chart-2: oklch(0.65 0.2 330);
   --chart-3: oklch(0.75 0.12 80);
-  --chart-4: oklch(0.65 0.18 320);
-  --chart-5: oklch(0.6 0.15 200);
-  --sidebar: oklch(0.12 0.015 260);
-  --sidebar-foreground: oklch(0.95 0.005 260);
-  --sidebar-primary: oklch(0.65 0.18 250);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.25 0.03 250);
-  --sidebar-accent-foreground: oklch(0.9 0.01 260);
-  --sidebar-border: oklch(0.25 0.015 260);
-  --sidebar-ring: oklch(0.65 0.18 250);
+  --chart-4: oklch(0.6 0.18 280);
+  --chart-5: oklch(0.55 0.15 260);
+  --sidebar: oklch(0.15 0.05 300);
+  --sidebar-foreground: oklch(0.95 0.01 300);
+  --sidebar-primary: oklch(0.95 0.01 300);
+  --sidebar-primary-foreground: oklch(0.15 0.05 300);
+  --sidebar-accent: oklch(0.25 0.06 300);
+  --sidebar-accent-foreground: oklch(0.95 0.01 300);
+  --sidebar-border: oklch(0.25 0.04 300);
+  --sidebar-ring: oklch(0.65 0.2 330);
   
   /* Status colors */
   --success: oklch(0.6 0.15 145);
   --success-foreground: oklch(1 0 0);
   --warning: oklch(0.7 0.15 80);
   --warning-foreground: oklch(0.2 0.1 80);
-  --info: oklch(0.55 0.12 230);
+  --info: oklch(0.55 0.15 280);
   --info-foreground: oklch(1 0 0);
+  --alert: oklch(0.6 0.22 330);
+  --alert-foreground: oklch(1 0 0);
 }
 
 @theme inline {
@@ -135,6 +143,8 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
+  --color-alert: var(--alert);
+  --color-alert-foreground: var(--alert-foreground);
 }
 
 @layer base {

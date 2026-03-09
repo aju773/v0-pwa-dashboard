@@ -35,16 +35,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-dvh flex items-center justify-center bg-muted/40 p-4">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,transparent_49%,var(--border)_50%,transparent_51%,transparent_100%)] bg-[length:80px_80px] opacity-30 pointer-events-none" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_49%,var(--border)_50%,transparent_51%,transparent_100%)] bg-[length:80px_80px] opacity-30 pointer-events-none" />
+    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-[oklch(0.22_0.08_300)] via-[oklch(0.18_0.06_300)] to-[oklch(0.15_0.04_300)] p-4">
+      {/* Subtle grid pattern overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,transparent_49%,oklch(1_0_0/0.03)_50%,transparent_51%,transparent_100%)] bg-[length:60px_60px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_49%,oklch(1_0_0/0.03)_50%,transparent_51%,transparent_100%)] bg-[length:60px_60px] pointer-events-none" />
       
-      <Card className="w-full max-w-md relative z-10 border-0 shadow-xl shadow-foreground/5 bg-card">
+      <Card className="w-full max-w-md relative z-10 border-0 shadow-2xl shadow-black/20 bg-card">
         <CardHeader className="space-y-4 text-center pb-2">
           {/* Logo */}
-          <div className="flex justify-center">
-            <div className="size-16 rounded-2xl bg-background flex items-center justify-center overflow-hidden">
+          <div className="flex flex-col items-center gap-3">
+            <div className="size-16 rounded-2xl bg-muted/50 flex items-center justify-center overflow-hidden ring-1 ring-primary/10">
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
                 alt="AZ Tech Solutions Logo"
@@ -54,6 +54,9 @@ export default function LoginPage() {
                 priority
               />
             </div>
+            <span className="text-xs font-medium text-muted-foreground tracking-widest uppercase">
+              operating system
+            </span>
           </div>
           
           {/* Title */}
@@ -193,7 +196,7 @@ export default function LoginPage() {
       </Card>
 
       {/* Mobile-friendly bottom safe area padding */}
-      <div className="fixed bottom-0 left-0 right-0 h-[env(safe-area-inset-bottom)] bg-muted/40" />
+      <div className="fixed bottom-0 left-0 right-0 h-[env(safe-area-inset-bottom)] bg-[oklch(0.15_0.04_300)]" />
     </div>
   )
 }
