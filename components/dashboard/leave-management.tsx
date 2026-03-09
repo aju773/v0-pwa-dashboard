@@ -182,6 +182,10 @@ export function LeaveManagement() {
     console.log("Rejecting request:", id)
   }
 
+  const filteredRequests = currentRole === "Employee" 
+    ? pendingLeaveRequests.filter(req => req.employeeName === "John Doe" || req.employeeName.includes("Smith")) // Using Smith as fallback from existing mock data
+    : pendingLeaveRequests
+
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       {/* Header */}
@@ -191,7 +195,9 @@ export function LeaveManagement() {
             Leave Approvals & Attendance
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage team leave requests and view attendance overview
+            {currentRole === "Employee" 
+              ? "Manage your leave requests and view team availability" 
+              : "Manage team leave requests and view attendance overview"}
           </p>
         </div>
         <Button className="w-fit rounded-full px-5 shadow-sm">
@@ -225,7 +231,7 @@ export function LeaveManagement() {
             value="overview"
             className="rounded-lg px-5 data-[state=active]:bg-background data-[state=active]:shadow-sm"
           >
-            <Users className="mr-2 size-4" />
+            <Calendar className="mr-2 size-4" />
             Company Overview
           </TabsTrigger>
         </TabsList>
@@ -234,101 +240,123 @@ export function LeaveManagement() {
         <TabsContent value="pending" className="mt-0">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-[250px] pl-6">Employee</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Leave Type</TableHead>
-                    <TableHead>Dates</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="pr-6 text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {pendingLeaveRequests.map((request) => (
-                    <TableRow key={request.id} className="group">
-                      <TableCell className="pl-6">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="size-9 ring-2 ring-border">
-                            <AvatarImage src={request.employeeAvatar} alt={request.employeeName} />
-                            <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                              {request.employeeName.split(" ").map((n) => n[0]).join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium text-foreground">{request.employeeName}</p>
-                            {request.reason && (
-                              <p className="text-xs text-muted-foreground line-clamp-1 max-w-[180px]">
-                                {request.reason}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm text-foreground">{request.department}</span>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={cn(
-                            "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
-                            request.leaveType === "Full Day"
-                              ? "bg-blue-100 text-blue-800 border border-blue-200"
-                              : "bg-sky-100 text-sky-800 border border-sky-200"
-                          )}
-                        >
-                          {request.leaveType}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <p className="font-medium text-foreground">{request.startDate}</p>
-                          {request.startDate !== request.endDate && (
-                            <p className="text-xs text-muted-foreground">to {request.endDate}</p>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <StatusBadge status={request.status} />
-                      </TableCell>
-                      <TableCell className="pr-6 text-right">
-                        {(currentRole === "Team Lead" && request.status === "pending_lead") || 
-                         ((currentRole === "HR" || currentRole === "Admin") && request.status === "pending_hr") ? (
-                          <div className="flex items-center justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="size-8 rounded-full text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
-                              onClick={() => handleApprove(request.id)}
-                            >
-                              <Check className="size-4" />
-                              <span className="sr-only">Approve</span>
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="size-8 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
-                              onClick={() => handleReject(request.id)}
-                            >
-                              <X className="size-4" />
-                              <span className="sr-only">Reject</span>
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className="flex justify-end">
-                            {request.status === "approved" ? (
-                              <CheckCircle2 className="size-5 text-emerald-500" />
-                            ) : (
-                              <span className="text-xs text-muted-foreground">—</span>
-                            )}
-                          </div>
+              {filteredRequests.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="w-[250px] pl-6">Employee</TableHead>
+                        <TableHead>Department</TableHead>
+                        <TableHead>Leave Type</TableHead>
+                        <TableHead>Dates</TableHead>
+                        <TableHead>Status</TableHead>
+                        {currentRole !== "Employee" && (
+                          <TableHead className="pr-6 text-right">Actions</TableHead>
                         )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredRequests.map((request) => (
+                        <TableRow key={request.id} className="group">
+                          <TableCell className="pl-6">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="size-9 ring-2 ring-border">
+                                <AvatarImage src={request.employeeAvatar} alt={request.employeeName} />
+                                <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                                  {request.employeeName.split(" ").map((n) => n[0]).join("")}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium text-foreground">{request.employeeName}</p>
+                                {request.reason && (
+                                  <p className="text-xs text-muted-foreground line-clamp-1 max-w-[180px]">
+                                    {request.reason}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm text-foreground">{request.department}</span>
+                          </TableCell>
+                          <TableCell>
+                            <span
+                              className={cn(
+                                "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
+                                request.leaveType === "Full Day"
+                                  ? "bg-blue-100 text-blue-800 border border-blue-200"
+                                  : "bg-amber-100 text-amber-800 border border-amber-200"
+                              )}
+                            >
+                              {request.leaveType}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              <p className="font-medium text-foreground">{request.startDate}</p>
+                              {request.startDate !== request.endDate && (
+                                <p className="text-xs text-muted-foreground">to {request.endDate}</p>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <StatusBadge status={request.status} />
+                          </TableCell>
+                          
+                          {currentRole !== "Employee" && (
+                            <TableCell className="pr-6 text-right">
+                              {((currentRole === "Team Lead" && request.status === "pending_lead") || 
+                               ((currentRole === "HR" || currentRole === "Admin") && request.status === "pending_hr") ||
+                               (currentRole === "Admin" && request.status === "pending_admin")) ? (
+                                <div className="flex items-center justify-end gap-2">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="size-8 rounded-full text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+                                    onClick={() => handleApprove(request.id)}
+                                  >
+                                    <Check className="size-4" />
+                                    <span className="sr-only">Approve</span>
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="size-8 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    onClick={() => handleReject(request.id)}
+                                  >
+                                    <X className="size-4" />
+                                    <span className="sr-only">Reject</span>
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className="flex justify-end">
+                                  {request.status === "approved" ? (
+                                    <CheckCircle2 className="size-5 text-emerald-500" />
+                                  ) : request.status === "rejected" ? (
+                                    <X className="size-5 text-destructive" />
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground">—</span>
+                                  )}
+                                </div>
+                              )}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-emerald-100">
+                    <CheckCircle2 className="size-6 text-emerald-600" />
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground">No pending requests</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    You have no active leave requests at the moment.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -338,39 +366,106 @@ export function LeaveManagement() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               icon={Users}
-              label="On Leave Today"
-              value={companyOverviewData.onLeaveToday}
+              label={currentRole === "Employee" ? "Team on Leave Today" : "Company on Leave Today"}
+              value={currentRole === "Employee" ? 2 : companyOverviewData.onLeaveToday}
             />
-            <StatCard
-              icon={Clock}
-              label="Pending Requests"
-              value={companyOverviewData.pendingRequests}
-            />
+            {currentRole !== "Employee" && (
+              <StatCard
+                icon={Clock}
+                label="Pending Requests"
+                value={companyOverviewData.pendingRequests}
+              />
+            )}
             <StatCard
               icon={Calendar}
-              label="Approved This Month"
-              value={companyOverviewData.approvedThisMonth}
+              label={currentRole === "Employee" ? "My Approved Days" : "Approved This Month"}
+              value={currentRole === "Employee" ? 14 : companyOverviewData.approvedThisMonth}
             />
             <StatCard
               icon={TrendingUp}
-              label="Leave Utilization"
-              value={`${companyOverviewData.utilizationRate}%`}
-              trend="+5%"
+              label={currentRole === "Employee" ? "Leave Balance" : "Leave Utilization"}
+              value={currentRole === "Employee" ? "8 Days" : `${companyOverviewData.utilizationRate}%`}
+              trend={currentRole === "Employee" ? undefined : "+5%"}
             />
           </div>
 
-          <Card className="mt-6 border-0 shadow-sm">
-            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-muted">
-                <Calendar className="size-8 text-muted-foreground" />
+          {/* New Example Company/Team Leave Calendar */}
+          <Card className="mt-6 border-0 shadow-sm overflow-hidden">
+            <div className="border-b border-border bg-muted/20 px-6 py-4 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-medium text-foreground">
+                  {currentRole === "Employee" ? "Team Availability Calendar" : "Company Leave Calendar"}
+                </h3>
+                <p className="text-sm text-muted-foreground">December 2026</p>
               </div>
-              <h3 className="text-lg font-medium text-foreground">Company Leave Calendar</h3>
-              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                View team availability and upcoming leave schedules at a glance
-              </p>
-              <Button variant="outline" className="mt-4 rounded-full">
-                View Calendar
-              </Button>
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="size-3 rounded-full bg-primary/20"></span>
+                  <span className="text-muted-foreground">Full Day Leave</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="size-3 rounded-full bg-amber-200"></span>
+                  <span className="text-muted-foreground">Half Day</span>
+                </div>
+              </div>
+            </div>
+            
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <div className="min-w-[800px]">
+                  {/* Calendar Header (Dates) */}
+                  <div className="grid grid-cols-[180px_repeat(14,1fr)] border-b border-border bg-muted/10 text-xs font-medium text-muted-foreground">
+                    <div className="p-3 border-r border-border">Team Member</div>
+                    {Array.from({ length: 14 }).map((_, i) => (
+                      <div key={i} className="p-3 text-center border-r border-border last:border-0">
+                        <div className="opacity-70">Dec</div>
+                        <div className={cn("text-base font-semibold mt-0.5", (i === 5 || i === 6 || i === 12 || i === 13) ? "text-primary/60" : "text-foreground")}>
+                          {i + 14}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Calendar Rows */}
+                  {[
+                    { name: "John Smith", dept: "Engineering", leaves: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0] },
+                    { name: "Emily Chen", dept: "Design", leaves: [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+                    { name: "Michael Brown", dept: "Marketing", leaves: [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0] },
+                    { name: "Sarah Johnson", dept: "Cybersecurity", leaves: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+                    { name: "David Wilson", dept: "Engineering", leaves: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] },
+                  ].map((person, index) => (
+                    <div key={index} className="grid grid-cols-[180px_repeat(14,1fr)] border-b border-border last:border-0 hover:bg-muted/10 transition-colors">
+                      <div className="p-3 border-r border-border flex items-center gap-3">
+                        <Avatar className="size-7">
+                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${person.name.split(' ')[0]}`} />
+                          <AvatarFallback className="bg-primary/10 text-primary text-[10px]">{person.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="overflow-hidden">
+                          <div className="text-sm font-medium truncate">{person.name}</div>
+                          <div className="text-[10px] text-muted-foreground truncate">{person.dept}</div>
+                        </div>
+                      </div>
+                      
+                      {person.leaves.map((status, i) => {
+                        const isWeekend = i === 5 || i === 6 || i === 12 || i === 13;
+                        return (
+                          <div key={i} className={cn(
+                            "p-2 border-r border-border last:border-0 flex items-center justify-center relative",
+                            isWeekend && "bg-muted/20"
+                          )}>
+                            {status === 1 && (
+                              <div className="absolute inset-x-1 top-2 bottom-2 bg-primary/20 rounded-md border border-primary/30" title="Full Day Leave" />
+                            )}
+                            {status === 2 && (
+                               <div className="absolute inset-x-1 top-2 bottom-2 bg-amber-100 rounded-md border border-amber-300" title="Half Day Leave" />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

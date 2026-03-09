@@ -21,7 +21,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
 import { useRole } from "./role-context"
 
-interface Ticket {
+export interface Ticket {
   id: string
   title: string
   description: string
@@ -44,7 +44,7 @@ interface Ticket {
   }>
 }
 
-const tickets: Ticket[] = [
+export const tickets: Ticket[] = [
   {
     id: "1",
     title: "Need IAM access for AWS",
@@ -146,6 +146,24 @@ const tickets: Ticket[] = [
         timestamp: "1 day ago"
       }
     ]
+  },
+  {
+    id: "6",
+    title: "Onboarding hardware request for new hires",
+    description: "We have 3 new engineers starting next Monday. I need approval and procurement status for their Macbook Pros and monitors.",
+    severity: "medium",
+    status: "unresolved",
+    linkedProject: "HR / Operations",
+    linkedClient: "Internal",
+    blockedTask: "New Engineer Onboarding",
+    raisedBy: {
+      name: "Jessica Lee",
+      role: "HR Generalist",
+      avatar: "",
+      initials: "JL"
+    },
+    timestamp: "3 hours ago",
+    replies: []
   }
 ]
 
@@ -411,16 +429,21 @@ function EmptyDetail() {
 export function InternalTickets() {
   const [filter, setFilter] = useState("all")
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>("1")
+  const { currentRole } = useRole()
 
-  const filteredTickets = tickets.filter(ticket => {
+  const hrFilteredTickets = currentRole === "HR" 
+    ? tickets.filter(t => t.linkedProject.includes("HR") || t.linkedProject.includes("Infrastructure") || t.raisedBy.role.includes("HR"))
+    : tickets
+
+  const filteredTickets = hrFilteredTickets.filter(ticket => {
     if (filter === "unresolved") return ticket.status === "unresolved"
     if (filter === "resolved") return ticket.status === "resolved"
     return true
   })
 
-  const selectedTicket = tickets.find(t => t.id === selectedTicketId)
+  const selectedTicket = filteredTickets.find(t => t.id === selectedTicketId) || filteredTickets[0]
 
-  const unresolvedCount = tickets.filter(t => t.status === "unresolved").length
+  const unresolvedCount = hrFilteredTickets.filter(t => t.status === "unresolved").length
 
   return (
     <div className="space-y-6">
@@ -428,7 +451,7 @@ export function InternalTickets() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Team Blockers & Tickets
+            {currentRole === "HR" ? "HR & Operations Helpdesk" : "Team Blockers & Tickets"}
           </h1>
           <p className="text-muted-foreground mt-1">
             {unresolvedCount} unresolved {unresolvedCount === 1 ? "ticket" : "tickets"} requiring attention
