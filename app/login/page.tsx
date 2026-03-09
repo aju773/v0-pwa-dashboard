@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Hexagon, Eye, EyeOff, Building2, Loader2 } from "lucide-react"
+import Image from "next/image"
+import { Eye, EyeOff, Building2, Loader2 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -43,15 +44,22 @@ export default function LoginPage() {
         <CardHeader className="space-y-4 text-center pb-2">
           {/* Logo */}
           <div className="flex justify-center">
-            <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Hexagon className="size-8 text-primary" strokeWidth={1.5} />
+            <div className="size-16 rounded-2xl bg-background flex items-center justify-center overflow-hidden">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
+                alt="AZ Tech Solutions Logo"
+                width={64}
+                height={64}
+                className="object-contain"
+                priority
+              />
             </div>
           </div>
           
           {/* Title */}
           <div className="space-y-1.5">
             <CardTitle className="text-xl font-semibold tracking-tight text-balance">
-              Welcome back
+              Welcome to AZ Tech
             </CardTitle>
             <CardDescription className="text-muted-foreground text-sm">
               Sign in to your workspace

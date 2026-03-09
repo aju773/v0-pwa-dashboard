@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -39,15 +40,27 @@ export function Sidebar({ collapsed, onToggle, activeItem = "Dashboard" }: Sideb
       <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">W</span>
+            <div className="flex size-9 items-center justify-center rounded-lg overflow-hidden bg-background">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
+                alt="AZ Tech Solutions"
+                width={36}
+                height={36}
+                className="object-contain"
+              />
             </div>
-            <span className="text-lg font-semibold text-sidebar-foreground">Workspace</span>
+            <span className="text-lg font-semibold text-sidebar-foreground">AZ Tech</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">W</span>
+          <div className="mx-auto flex size-9 items-center justify-center rounded-lg overflow-hidden bg-background">
+            <Image
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/photo_2026-03-09_10-01-31-xdGqAtbxFUyVojTGFQ9YepTXUUswUU.jpg"
+              alt="AZ Tech Solutions"
+              width={36}
+              height={36}
+              className="object-contain"
+            />
           </div>
         )}
       </div>
