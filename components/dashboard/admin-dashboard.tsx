@@ -6,8 +6,15 @@ import { ShieldAlert, ArrowRight, UserCheck, CheckCircle2, Clock } from "lucide-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { tickets } from "./internal-tickets"
 
+// At the top of the file, we need useState and ToggleGroup imports
+import { useState } from "react"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { ScrollArea } from "@/components/ui/scroll-area"
+
+// ... inside the AdminDashboard component:
 export function AdminDashboard() {
   const escalatedTickets = tickets.filter(t => t.status === "unresolved" && t.severity === "high")
+  const [activeTeam, setActiveTeam] = useState("Cyber Security")
 
   return (
     <div className="space-y-6">
@@ -83,175 +90,232 @@ export function AdminDashboard() {
         </CardContent>
       </Card>
 
-      {/* The Daily Pulse Module (Material Design 3) */}
-      <h3 className="text-xl font-semibold tracking-tight text-foreground mt-8 mb-4">The Daily Pulse</h3>
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* The Daily Pulse Module (Team Based) */}
+      <div className="mt-10 mb-6 border-b border-border/60 pb-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-semibold tracking-tight text-foreground">The Daily Pulse</h3>
+            <p className="text-sm text-muted-foreground mt-1">Live operational data sliced by department</p>
+          </div>
+          
+          {/* Department Tabs */}
+          <ToggleGroup 
+            type="single" 
+            value={activeTeam} 
+            onValueChange={(value) => value && setActiveTeam(value)}
+            className="bg-muted/50 p-1 rounded-full self-start md:self-auto"
+          >
+            <ToggleGroupItem value="Cyber Security" className="rounded-full px-4 text-xs font-medium data-[state=on]:bg-background data-[state=on]:shadow-sm">
+              Cyber Security
+            </ToggleGroupItem>
+            <ToggleGroupItem value="Engineering" className="rounded-full px-4 text-xs font-medium data-[state=on]:bg-background data-[state=on]:shadow-sm">
+              Engineering
+            </ToggleGroupItem>
+            <ToggleGroupItem value="Design" className="rounded-full px-4 text-xs font-medium data-[state=on]:bg-background data-[state=on]:shadow-sm">
+              Design
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
         
-        {/* Morning Check-in Pulse */}
-        <Card className="border-0 shadow-md ring-1 ring-border/50 bg-card overflow-hidden flex flex-col transition-all hover:shadow-lg">
-          <CardHeader className="pb-4 border-b border-border/40 bg-muted/10">
+        {/* Morning Check-in: Active Initiatives */}
+        <Card className="border-0 shadow-md ring-1 ring-border/50 bg-card flex flex-col transition-all hover:shadow-lg h-[420px]">
+          <CardHeader className="pb-4 border-b border-border/40 bg-muted/10 shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="flex size-10 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 ring-1 ring-blue-500/20">
                   <UserCheck className="size-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-foreground tracking-tight">Morning Check-ins</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">Recorded Today by 10:00 AM</p>
+                  <h3 className="text-base font-semibold text-foreground tracking-tight">Active Initiatives</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">Morning declarations by {activeTeam}</p>
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-3xl font-bold tracking-tighter text-foreground">
-                  34<span className="text-muted-foreground text-[0.55em] font-medium ml-0.5">/37</span>
+                <span className="text-2xl font-bold tracking-tighter text-foreground">
+                  {activeTeam === "Cyber Security" ? 14 : activeTeam === "Engineering" ? 18 : 5}
+                  <span className="text-muted-foreground text-[0.5em] font-medium ml-1 tracking-normal uppercase">Online</span>
                 </span>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="pt-6 flex-1 flex flex-col gap-8">
-            {/* Status Bar */}
-            <div>
-              <div className="flex justify-between items-end mb-3">
-                <span className="text-sm font-semibold text-foreground tracking-tight">Fleet Online Status</span>
-                <span className="text-sm text-blue-600 font-bold bg-blue-500/10 px-2.5 py-0.5 rounded-full ring-1 ring-blue-500/20">
-                  92% Active
-                </span>
-              </div>
-              <div className="h-4 w-full bg-muted/50 rounded-full overflow-hidden flex p-0.5 ring-1 ring-border/40 inset-shadow-sm">
-                <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full shadow-sm" style={{ width: '92%' }} />
-              </div>
-            </div>
-
-            {/* Focus Allocation */}
-            <div className="space-y-4">
-              <h4 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Today's Focus Allocation</h4>
-              
-              <div className="space-y-4">
-                <div className="relative">
-                  <div className="flex items-center justify-between text-sm mb-1.5 relative z-10">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-primary/20" />
-                      <span className="font-medium text-foreground/90">AWS Migration <span className="text-muted-foreground font-normal ml-1">(Eng)</span></span>
+          <CardContent className="p-0 flex flex-col flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="p-6">
+                
+                {activeTeam === "Cyber Security" ? (
+                  <div className="space-y-4">
+                    {/* Log 1 */}
+                    <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border">
+                      <div className="flex justify-between items-start gap-4 mb-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Avatar className="size-8 shrink-0">
+                            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" />
+                            <AvatarFallback>AL</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className="block font-semibold text-sm text-foreground truncate">Alex Rivera</span>
+                            <span className="block text-xs text-muted-foreground">Today, 8:45 AM</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-primary bg-primary/10 px-2 py-0.5 rounded-md">MyCiso</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">Clear</span>
+                        </div>
+                      </div>
+                      <p className="text-foreground text-sm leading-relaxed pl-10 font-mono text-xs bg-muted/40 p-3 rounded-lg border border-border/50">"Starting the day by reviewing automated test results from overnight. Will spend the afternoon writing the final report section on access controls."</p>
                     </div>
-                    <span className="font-semibold tabular-nums">45%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-primary/10 rounded-full overflow-hidden">
-                     <div className="h-full bg-primary rounded-full" style={{ width: '45%' }} />
-                  </div>
-                </div>
 
-                <div className="relative">
-                  <div className="flex items-center justify-between text-sm mb-1.5 relative z-10">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-amber-500/20" />
-                      <span className="font-medium text-foreground/90">TechStart UI <span className="text-muted-foreground font-normal ml-1">(Design & Eng)</span></span>
+                    {/* Log 2 */}
+                    <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border relative overflow-hidden">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-destructive" />
+                      <div className="flex justify-between items-start gap-4 mb-3 pl-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Avatar className="size-8 shrink-0">
+                            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" />
+                            <AvatarFallback>SK</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className="block font-semibold text-sm text-foreground truncate">Sarah Kim</span>
+                            <span className="block text-xs text-muted-foreground">Today, 9:10 AM</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-500/10 px-2 py-0.5 rounded-md">Acme Audit</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-destructive bg-destructive/10 px-2 py-0.5 rounded-md">Blocked</span>
+                        </div>
+                      </div>
+                      <p className="text-foreground text-sm leading-relaxed pl-10 font-mono text-xs bg-muted/40 p-3 rounded-lg border border-border/50">"Still blocked on Acme Prod access. Re-sent emails to their IT team. Will pivot to helping David with MyCiso documentation until they unlock my account."</p>
                     </div>
-                    <span className="font-semibold tabular-nums">35%</span>
-                  </div>
-                   <div className="h-1.5 w-full bg-amber-500/10 rounded-full overflow-hidden">
-                     <div className="h-full bg-amber-500 rounded-full" style={{ width: '35%' }} />
-                  </div>
-                </div>
 
-                <div className="relative">
-                  <div className="flex items-center justify-between text-sm mb-1.5 relative z-10">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20" />
-                      <span className="font-medium text-foreground/90">Internal Ops & HR</span>
+                    {/* Log 3 */}
+                    <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border">
+                      <div className="flex justify-between items-start gap-4 mb-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Avatar className="size-8 shrink-0">
+                            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=David" />
+                            <AvatarFallback>DJ</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className="block font-semibold text-sm text-foreground truncate">David Jones</span>
+                            <span className="block text-xs text-muted-foreground">Today, 9:05 AM</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-primary bg-primary/10 px-2 py-0.5 rounded-md">MyCiso</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">Meeting Heavy</span>
+                        </div>
+                      </div>
+                      <p className="text-foreground text-sm leading-relaxed pl-10 font-mono text-xs bg-muted/40 p-3 rounded-lg border border-border/50">"Mostly meetings today. 10AM Sync with client, 1PM design review for upcoming infra changes. Will try to squeeze in some doc updates."</p>
                     </div>
-                    <span className="font-semibold tabular-nums">20%</span>
                   </div>
-                   <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden">
-                     <div className="h-full bg-emerald-500 rounded-full" style={{ width: '20%' }} />
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 text-center h-full">
+                    <p className="text-sm font-medium text-foreground">No Logs Available</p>
+                    <p className="text-xs text-muted-foreground mt-1 max-w-[200px]">Switch to Cyber Security to view the mock employee logs.</p>
                   </div>
-                </div>
+                )}
+
               </div>
-            </div>
+            </ScrollArea>
           </CardContent>
         </Card>
 
-        {/* Evening EOD Summary */}
-        <Card className="border-0 shadow-md ring-1 ring-border/50 bg-card overflow-hidden flex flex-col transition-all hover:shadow-lg">
-          <CardHeader className="pb-4 border-b border-border/40 bg-muted/10">
+        {/* Evening Handover: Ground Truth Logs */}
+        <Card className="border-0 shadow-md ring-1 ring-border/50 bg-card flex flex-col transition-all hover:shadow-lg h-[420px]">
+          <CardHeader className="pb-4 border-b border-border/40 bg-muted/10 shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="flex size-10 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/20">
                   <Clock className="size-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-foreground tracking-tight">Evening Handover</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">Aggregated Summary (Yesterday)</p>
+                  <h3 className="text-base font-semibold text-foreground tracking-tight">Ground Truth Logs</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">Raw Evening Updates ({activeTeam})</p>
                 </div>
-              </div>
-              <div className="flex -space-x-2.5">
-                <Avatar className="size-9 ring-2 ring-background shadow-xs"><AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" /></Avatar>
-                <Avatar className="size-9 ring-2 ring-background shadow-xs"><AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" /></Avatar>
-                <Avatar className="size-9 ring-2 ring-background shadow-xs"><AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mike" /></Avatar>
-                <div className="size-9 rounded-full ring-2 ring-background bg-muted flex items-center justify-center text-[10px] font-semibold text-muted-foreground shadow-xs z-10">+31</div>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="pt-6 flex-1 flex flex-col gap-6">
-            
-            {/* AI Briefing Segment */}
-            <div className="relative rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/40 dark:to-emerald-900/10 border border-emerald-200/60 dark:border-emerald-800/40 p-5 shadow-sm">
-              <div className="absolute top-0 right-0 p-3 opacity-10 pointer-events-none">
-                 <CheckCircle2 className="size-16 text-emerald-600" />
-              </div>
-              <div className="flex gap-3 relative z-10">
-                <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-400">
-                  <span className="text-xs font-bold leading-none">AI</span>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-emerald-900 dark:text-emerald-200/90 leading-relaxed">
-                    Productivity was high yesterday (88% tasks completed). The only bottleneck is pending approval from the TechStart client. 
-                  </p>
-                  <p className="text-sm text-emerald-700 font-medium">
-                    2 people reported feeling overworked.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Exceptions Report */}
-            <div className="space-y-4">
-              <h4 className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                <span>Exceptions Report</span>
-                <span className="bg-destructive/10 text-destructive px-2.5 py-0.5 rounded-full text-[10px] ring-1 ring-destructive/20 shadow-sm">2 Flags</span>
-              </h4>
-              
-              <div className="grid gap-3">
-                {/* Exception 1 */}
-                <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border">
-                  <div className="flex justify-between items-start gap-4 mb-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <Avatar className="size-6 shrink-0">
-                        <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" />
-                        <AvatarFallback>SK</AvatarFallback>
-                      </Avatar>
-                      <span className="font-semibold text-sm text-foreground truncate">Sarah Kim <span className="text-muted-foreground font-normal">(Data Eng)</span></span>
-                    </div>
-                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-full ring-1 ring-amber-500/20">Overworked</span>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed pl-8">"Logged 11 hours today fighting the legacy database migration. Needs PM attention."</p>
-                </div>
+          <CardContent className="p-0 flex flex-col flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="p-6">
                 
-                {/* Exception 2 */}
-                <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border">
-                  <div className="flex justify-between items-start gap-4 mb-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <Avatar className="size-6 shrink-0">
-                        <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus" />
-                        <AvatarFallback>MC</AvatarFallback>
-                      </Avatar>
-                      <span className="font-semibold text-sm text-foreground truncate">Marcus Chen <span className="text-muted-foreground font-normal">(DevOps)</span></span>
+                {activeTeam === "Cyber Security" ? (
+                  <div className="space-y-4">
+                    {/* Log 1 */}
+                    <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border">
+                      <div className="flex justify-between items-start gap-4 mb-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Avatar className="size-8 shrink-0">
+                            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" />
+                            <AvatarFallback>AL</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className="block font-semibold text-sm text-foreground truncate">Alex Rivera</span>
+                            <span className="block text-xs text-muted-foreground">Yesterday, 5:45 PM</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-primary bg-primary/10 px-2 py-0.5 rounded-md">MyCiso</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">Productive</span>
+                        </div>
+                      </div>
+                      <p className="text-foreground text-sm leading-relaxed pl-10 font-mono text-xs bg-muted/40 p-3 rounded-lg border border-border/50">"worked on myciso and make authorization update. automated 3 new test scripts for the pentest."</p>
                     </div>
-                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-destructive bg-destructive/10 px-2 py-0.5 rounded-full ring-1 ring-destructive/20">Blocked</span>
+
+                    {/* Log 2 */}
+                    <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border relative overflow-hidden">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500" />
+                      <div className="flex justify-between items-start gap-4 mb-3 pl-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Avatar className="size-8 shrink-0">
+                            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" />
+                            <AvatarFallback>SK</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className="block font-semibold text-sm text-foreground truncate">Sarah Kim</span>
+                            <span className="block text-xs text-muted-foreground">Yesterday, 6:15 PM</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-500/10 px-2 py-0.5 rounded-md">Acme Audit</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">Blocked</span>
+                        </div>
+                      </div>
+                      <p className="text-foreground text-sm leading-relaxed pl-10 font-mono text-xs bg-muted/40 p-3 rounded-lg border border-border/50">"finished initial scan on acme prod servers but unable to access the internal DB subnet. waiting on client IT to whitelist my VPN IP."</p>
+                    </div>
+
+                    {/* Log 3 */}
+                    <div className="group bg-card hover:bg-muted/30 border border-border/80 transition-colors rounded-xl p-4 shadow-sm ring-1 ring-transparent hover:ring-border">
+                      <div className="flex justify-between items-start gap-4 mb-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Avatar className="size-8 shrink-0">
+                            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=David" />
+                            <AvatarFallback>DJ</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className="block font-semibold text-sm text-foreground truncate">David Jones</span>
+                            <span className="block text-xs text-muted-foreground">Yesterday, 5:00 PM</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-primary bg-primary/10 px-2 py-0.5 rounded-md">MyCiso</span>
+                        </div>
+                      </div>
+                      <p className="text-foreground text-sm leading-relaxed pl-10 font-mono text-xs bg-muted/40 p-3 rounded-lg border border-border/50">"code review for alex's auth updates. wrote documentation for the new endpoint."</p>
+                    </div>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed pl-8">"Still waiting on IAM roles. Second day unable to deploy. Escalating."</p>
-                </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 text-center h-full">
+                    <p className="text-sm font-medium text-foreground">No Logs Available</p>
+                    <p className="text-xs text-muted-foreground mt-1 max-w-[200px]">Switch to Cyber Security to view the mock employee logs.</p>
+                  </div>
+                )}
+
               </div>
-            </div>
-            
+            </ScrollArea>
           </CardContent>
         </Card>
       </div>
